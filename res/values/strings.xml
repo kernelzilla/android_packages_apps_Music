@@ -149,7 +149,7 @@
     <!-- label underneath icon used to indicate that the sd card is present, but currently unavailable -->
     <string name="sdcard_busy_title">SD card unavailable</string>
     <!-- label underneath icon used to indicate sd card is mounted to your computer via USB -->
-    <string name="sdcard_busy_message">Sorry, your SD card is busy.</string>
+    <string name="sdcard_busy_message">SD card is busy.</string>
     <!-- Title of screen when there was an error accessing the sd card -->
     <string name="sdcard_error_title">SD card error</string>
     <!-- label underneath icon used to indicate there was an error accessing the sd card -->
@@ -192,7 +192,7 @@
         <item quantity="other"><xliff:g id="number" example="27">%d</xliff:g> songs added to playlist.</item>
     </plurals>
     <!-- Toast after selecting an empty playlist -->
-    <string name="emptyplaylist">Selected playlist is empty.</string>
+    <string name="emptyplaylist">playlist empty.</string>
     <!-- Button name when saving a playlist -->
     <string name="create_playlist_create_text">Save</string>
     <!-- Button name when saving a playlist and the new playlist will overwrite an existing one -->
@@ -298,6 +298,9 @@
     <!-- Setting for auto-unpause when headset is plugged in -->
     <string name="unpause_on_headset_plug_title">Unpause on connect</string>
     <string name="unpause_on_headset_plug_summary">Unpause the player when a headset is connected</string>
+
+    <!-- slash for curent time in audio player -->
+        <string name="slash"> / </string>
 
 </resources>
 

@@ -234,11 +234,23 @@
         </activity>
         <service android:name="MediaPlaybackService" android:exported="true" />
 
-        <receiver android:name="MediaAppWidgetProvider">
+        <receiver android:name="MediaAppWidgetProvider" android:label="Music (4x1)">
             <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
             </intent-filter>
-            <meta-data android:name="android.appwidget.provider" android:resource="@xml/appwidget_info" />
+            <meta-data android:name="android.appwidget.provider" android:resource="@xml/appwidget1_info" />
+        </receiver>
+        <receiver android:name="MediaAppWidgetProvider2" android:label="Music (4x2)">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+            </intent-filter>
+            <meta-data android:name="android.appwidget.provider" android:resource="@xml/appwidget2_info" />
+        </receiver>
+        <receiver android:name="MediaAppWidgetProvider3" android:label="Music (2x2)">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+            </intent-filter>
+            <meta-data android:name="android.appwidget.provider" android:resource="@xml/appwidget3_info" />
         </receiver>
     </application>
 </manifest>

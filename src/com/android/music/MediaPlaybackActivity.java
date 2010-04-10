@@ -66,6 +66,15 @@ import android.widget.Toast;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 
 
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
+
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.PixelFormat;
+import android.graphics.ColorFilter;
+
 public class MediaPlaybackActivity extends Activity implements MusicUtils.Defs,
     View.OnTouchListener, View.OnLongClickListener
 {
@@ -105,6 +114,12 @@ public class MediaPlaybackActivity extends Activity implements MusicUtils.Defs,
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.audio_player);
+
+        // wallpaper as backround image	
+        Window window = getWindow();
+        final BitmapDrawable drawable = (BitmapDrawable) getWallpaper();	
+        window.setBackgroundDrawable(
+                new FastBitmapDrawable(drawable.getBitmap()));
 
         mCurrentTime = (TextView) findViewById(R.id.currenttime);
         mTotalTime = (TextView) findViewById(R.id.totaltime);
@@ -1106,13 +1121,13 @@ public class MediaPlaybackActivity extends Activity implements MusicUtils.Defs,
         try {
             switch (mService.getRepeatMode()) {
                 case MediaPlaybackService.REPEAT_ALL:
-                    mRepeatButton.setImageResource(R.drawable.ic_mp_repeat_all_btn);
+                    mRepeatButton.setImageResource(R.drawable.repeat_all);
                     break;
                 case MediaPlaybackService.REPEAT_CURRENT:
-                    mRepeatButton.setImageResource(R.drawable.ic_mp_repeat_once_btn);
+                    mRepeatButton.setImageResource(R.drawable.repeat_once);
                     break;
                 default:
-                    mRepeatButton.setImageResource(R.drawable.ic_mp_repeat_off_btn);
+                    mRepeatButton.setImageResource(R.drawable.repeat_off);
                     break;
             }
         } catch (RemoteException ex) {
@@ -1123,13 +1138,13 @@ public class MediaPlaybackActivity extends Activity implements MusicUtils.Defs,
         try {
             switch (mService.getShuffleMode()) {
                 case MediaPlaybackService.SHUFFLE_NONE:
-                    mShuffleButton.setImageResource(R.drawable.ic_mp_shuffle_off_btn);
+                    mShuffleButton.setImageResource(R.drawable.shuffle_off);
                     break;
                 case MediaPlaybackService.SHUFFLE_AUTO:
-                    mShuffleButton.setImageResource(R.drawable.ic_mp_partyshuffle_on_btn);
+                    mShuffleButton.setImageResource(R.drawable.party_shuffle);
                     break;
                 default:
-                    mShuffleButton.setImageResource(R.drawable.ic_mp_shuffle_on_btn);
+                    mShuffleButton.setImageResource(R.drawable.shuffle_on);
                     break;
             }
         } catch (RemoteException ex) {
@@ -1139,9 +1154,9 @@ public class MediaPlaybackActivity extends Activity implements MusicUtils.Defs,
     private void setPauseButtonImage() {
         try {
             if (mService != null && mService.isPlaying()) {
-                mPauseButton.setImageResource(android.R.drawable.ic_media_pause);
+                mPauseButton.setImageResource(R.drawable.pause_button);
             } else {
-                mPauseButton.setImageResource(android.R.drawable.ic_media_play);
+                mPauseButton.setImageResource(R.drawable.play_button);
             }
         } catch (RemoteException ex) {
         }
@@ -1426,5 +1441,58 @@ public class MediaPlaybackActivity extends Activity implements MusicUtils.Defs,
             mLooper.quit();
         }
     }
-}
+    /**	
+     * wallpaper in background
+     */
+    static private class FastBitmapDrawable extends Drawable {
+        private Bitmap mBitmap;
+        private int mOpacity;
 
+        private FastBitmapDrawable(Bitmap bitmap) {
+            mBitmap = bitmap;
+            mOpacity = mBitmap.hasAlpha() ? PixelFormat.TRANSLUCENT : PixelFormat.OPAQUE;	
+        }
+
+        @Override
+        public void draw(Canvas canvas) {
+            canvas.drawBitmap(
+                    mBitmap,
+                    (getBounds().width() - mBitmap.getWidth()) / 2,
+                    (getBounds().height() - mBitmap.getHeight()) / 2,
+                    null);
+        }
+
+        @Override
+        public int getOpacity() {
+            return mOpacity;
+        }
+
+        @Override
+        public void setAlpha(int alpha) {
+        }
+
+        @Override
+        public void setColorFilter(ColorFilter cf) {
+        }
+
+        @Override
+        public int getIntrinsicWidth() {
+            return mBitmap.getWidth();
+        }
+
+        @Override
+        public int getIntrinsicHeight() {	
+            return mBitmap.getHeight();
+        }
+
+        @Override
+        public int getMinimumWidth() {	
+            return mBitmap.getWidth();
+        }	
+
+        @Override	
+        public int getMinimumHeight() {	
+            return mBitmap.getHeight();	
+        }	
+    }
+}

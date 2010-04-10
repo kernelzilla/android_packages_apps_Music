@@ -73,10 +73,11 @@ public class MediaAppWidgetProvider extends AppWidgetProvider {
      */
     private void defaultAppWidget(Context context, int[] appWidgetIds) {
         final Resources res = context.getResources();
-        final RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.album_appwidget);
+        final RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.album_appwidget4x1);
         
         views.setViewVisibility(R.id.title, View.GONE);
         views.setTextViewText(R.id.artist, res.getText(R.string.emptyplaylist));
+        views.setImageViewResource(R.id.albumart, R.drawable.albumart_mp_unknown);
 
         linkButtons(context, views, false /* not playing */);
         pushUpdate(context, appWidgetIds, views);
@@ -120,7 +121,7 @@ public class MediaAppWidgetProvider extends AppWidgetProvider {
      */
     void performUpdate(MediaPlaybackService service, int[] appWidgetIds) {
         final Resources res = service.getResources();
-        final RemoteViews views = new RemoteViews(service.getPackageName(), R.layout.album_appwidget);
+        final RemoteViews views = new RemoteViews(service.getPackageName(), R.layout.album_appwidget4x1);
         
         CharSequence titleName = service.getTrackName();
         CharSequence artistName = service.getArtistName();
@@ -144,7 +145,7 @@ public class MediaAppWidgetProvider extends AppWidgetProvider {
             // Show error state to user
             views.setViewVisibility(R.id.title, View.GONE);
             views.setTextViewText(R.id.artist, errorState);
-	    views.setImageViewResource(R.id.albumart, R.drawable.albumart_mp_unknown_list);
+	    views.setImageViewResource(R.id.albumart, R.drawable.albumart_mp_unknown);
             
         } else {
             // No error, so show normal titles
@@ -152,7 +153,7 @@ public class MediaAppWidgetProvider extends AppWidgetProvider {
             views.setTextViewText(R.id.title, titleName);
             views.setTextViewText(R.id.artist, artistName);
 	    if (bm == null) {
-		views.setImageViewResource(R.id.albumart, R.drawable.albumart_mp_unknown_list);
+		views.setImageViewResource(R.id.albumart, R.drawable.albumart_mp_unknown);
 	} else {
 		views.setImageViewBitmap(R.id.albumart, bm);
           	}

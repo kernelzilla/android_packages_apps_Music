@@ -147,6 +147,10 @@ public class MediaPlaybackService extends Service {
     private int mCardId;
     
     private MediaAppWidgetProvider mAppWidgetProvider = MediaAppWidgetProvider.getInstance();
+
+    private MediaAppWidgetProvider2 mAppWidgetProvider2 = MediaAppWidgetProvider2.getInstance();
+
+    private MediaAppWidgetProvider3 mAppWidgetProvider3 = MediaAppWidgetProvider3.getInstance();
     
     // interval after which we stop the service when idle
     private static final int IDLE_DELAY = 60000; 
@@ -262,7 +266,16 @@ public class MediaPlaybackService extends Service {
                 // because they were just added.
                 int[] appWidgetIds = intent.getIntArrayExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS);
                 mAppWidgetProvider.performUpdate(MediaPlaybackService.this, appWidgetIds);
-            }
+            } else if (MediaAppWidgetProvider2.CMDAPPWIDGETUPDATE.equals(cmd)) {
+                // Someone asked us to refresh a set of specific widgets, probably
+                // because they were just added.
+                int[] appWidgetIds = intent.getIntArrayExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS);
+                mAppWidgetProvider2.performUpdate(MediaPlaybackService.this, appWidgetIds);
+            } else if (MediaAppWidgetProvider3.CMDAPPWIDGETUPDATE.equals(cmd)) {
+                // Someone asked us to refresh a set of specific widgets, probably
+                // because they were just added.
+                int[] appWidgetIds = intent.getIntArrayExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS);
+                mAppWidgetProvider3.performUpdate(MediaPlaybackService.this, appWidgetIds);
         }
     };
 
@@ -733,6 +746,8 @@ public class MediaPlaybackService extends Service {
         
         // Share this notification directly with our widgets
         mAppWidgetProvider.notifyChange(this, what);
+        mAppWidgetProvider2.notifyChange(this, what);
+	mAppWidgetProvider3.notifyChange(this, what);
     }
 
     private void ensurePlayListCapacity(int size) {
