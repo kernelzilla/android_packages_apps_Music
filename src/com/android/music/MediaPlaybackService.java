@@ -276,6 +276,7 @@ public class MediaPlaybackService extends Service {
                 // because they were just added.
                 int[] appWidgetIds = intent.getIntArrayExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS);
                 mAppWidgetProvider3.performUpdate(MediaPlaybackService.this, appWidgetIds);
+            }
         }
     };
 
