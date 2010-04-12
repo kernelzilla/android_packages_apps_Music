@@ -40,6 +40,7 @@ import android.graphics.PorterDuff.Mode;
 import android.graphics.RectF;
 import android.graphics.Rect;
 import android.view.View;
+import android.util.Log;
 
 /**
  * Simple widget to show currently playing album art along
@@ -48,7 +49,7 @@ import android.view.View;
 public class MediaAppWidgetProvider3 extends AppWidgetProvider {
     static final String TAG = "MusicAppWidgetProvider3";
     
-    public static final String CMDAPPWIDGETUPDATE = "appwidgetupdate";
+    public static final String CMDAPPWIDGETUPDATE = "appwidgetupdate3";
     
     static final ComponentName THIS_APPWIDGET =
         new ComponentName("com.android.music",
