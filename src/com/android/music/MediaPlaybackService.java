@@ -1287,6 +1287,8 @@ public class MediaPlaybackService extends Service {
                     } else {
                         // all done
                         gotoIdleState();
+                        notifyChange(PLAYBACK_COMPLETE);
+                        mIsSupposedToBePlaying = false;
                         return;
                     }
                 }
