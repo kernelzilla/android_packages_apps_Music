@@ -303,6 +303,10 @@
     <string name="doubletap_trackball_next_title">Use trackball to skip</string>
     <string name="doubletap_trackball_next_summary">Double tap trackball while sleeping to skip song</string>
 
+    <!-- Setting for Fullscreen Now Playing Screen -->
+    <string name="fullscreen_title">Now Playing Fullscreen</string>
+    <string name="fullscreen_summary">Now Playing screen will extend to the full size of your devices screen, and the notification bar will be hidden</string>
+
     <!-- slash for curent time in audio player -->
         <string name="slash"> / </string>
 

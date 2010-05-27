@@ -23,10 +23,10 @@
    <ImageView
         android:id="@+id/albumart"
         android:background="@drawable/album_border_small"
-        android:layout_width="wrap_content"
-        android:layout_height="fill_parent"
+        android:layout_width="180dip"
+        android:layout_height="165dip"
         android:adjustViewBounds="true"
-        android:scaleType="centerInside"
+        android:scaleType="fitCenter"
         android:layout_marginLeft="0dip"
         android:layout_marginRight="0dip"
         android:layout_marginTop="15dip"

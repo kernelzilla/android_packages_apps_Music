@@ -546,6 +546,7 @@ public class MediaPlaybackActivity extends Activity implements MusicUtils.Defs,
     public void onResume() {
         super.onResume();
         updateTrackInfo();
+	setFullscreen();
 
         if (mIntentDeRegistered) {
             paused = false;
@@ -1317,6 +1318,16 @@ public class MediaPlaybackActivity extends Activity implements MusicUtils.Defs,
             }
         }
     };
+
+    private void setFullscreen(int status) {
+    	
+    	if (MusicUtils.getBooleanPref(this, MusicSettingsActivity.KEY_NOW_PLAYING_FULLSCREEN, false)) {
+    			getWindow().addFlags(WindowManager.LayoutParams.FLAG_fullscreen);
+    		} else {
+    			getWindow().clearFlags(WindowManager.LayoutParams.FLAG_fullscreen);
+    		}
+    	}
+    }
 
     private void setPluggedIn(int status) {
     	
