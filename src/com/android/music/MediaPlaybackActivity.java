@@ -117,11 +117,11 @@ public class MediaPlaybackActivity extends Activity implements MusicUtils.Defs,
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.audio_player);
 
-        // wallpaper as backround image	
-        Window window = getWindow();
-        final BitmapDrawable drawable = (BitmapDrawable) getWallpaper();	
-        window.setBackgroundDrawable(
-                new FastBitmapDrawable(drawable.getBitmap()));
+        // wallpaper as backround image obsolite	
+        //Window window = getWindow();
+        //final BitmapDrawable drawable = (BitmapDrawable) getWallpaper();	
+        //window.setBackgroundDrawable(
+        //        new FastBitmapDrawable(drawable.getBitmap()));
 
         mCurrentTime = (TextView) findViewById(R.id.currenttime);
         mTotalTime = (TextView) findViewById(R.id.totaltime);
@@ -1319,14 +1319,12 @@ public class MediaPlaybackActivity extends Activity implements MusicUtils.Defs,
         }
     };
 
-    private void setFullscreen(int status) {
-    	
+    private void setFullscreen() {
     	if (MusicUtils.getBooleanPref(this, MusicSettingsActivity.KEY_NOW_PLAYING_FULLSCREEN, false)) {
-    			getWindow().addFlags(WindowManager.LayoutParams.FLAG_fullscreen);
+    			getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
     		} else {
-    			getWindow().clearFlags(WindowManager.LayoutParams.FLAG_fullscreen);
+    			getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
     		}
-    	}
     }
 
     private void setPluggedIn(int status) {
