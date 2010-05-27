@@ -125,15 +125,9 @@ public class MediaAppWidgetProvider extends AppWidgetProvider {
         
         CharSequence titleName = service.getTrackName();
         CharSequence artistName = service.getArtistName();
-<<<<<<< HEAD
 	long albumId = service.getAlbumId();
 	long songId = service.getAudioId();
 	Bitmap bm = MusicUtils.getArtwork(service, songId, albumId);
-=======
-        long albumId = service.getAlbumId();
-        long songId = service.getAudioId();
-        Bitmap bm = MusicUtils.getArtwork(service, songId, albumId);
->>>>>>> cyanogen
         CharSequence errorState = null;
         
         // Format title string with track number, or show SD card message
@@ -151,32 +145,21 @@ public class MediaAppWidgetProvider extends AppWidgetProvider {
             // Show error state to user
             views.setViewVisibility(R.id.title, View.GONE);
             views.setTextViewText(R.id.artist, errorState);
-<<<<<<< HEAD
-	    views.setImageViewResource(R.id.albumart, R.drawable.albumart_mp_unknown);
-=======
             views.setImageViewResource(R.id.albumart, R.drawable.albumart_mp_unknown_list);
->>>>>>> cyanogen
             
         } else {
             // No error, so show normal titles
             views.setViewVisibility(R.id.title, View.VISIBLE);
             views.setTextViewText(R.id.title, titleName);
             views.setTextViewText(R.id.artist, artistName);
-<<<<<<< HEAD
-	    if (bm == null) {
-		views.setImageViewResource(R.id.albumart, R.drawable.albumart_mp_unknown);
-	} else {
-		views.setImageViewBitmap(R.id.albumart, bm);
-          	}
-	}
-=======
+
             if (bm == null) {
                 views.setImageViewResource(R.id.albumart, R.drawable.albumart_mp_unknown_list);
             } else {
                 views.setImageViewBitmap(R.id.albumart, bm);
             }
         }
->>>>>>> cyanogen
+
         
         // Set correct drawable for pause state
         final boolean playing = service.isPlaying();

@@ -83,12 +83,10 @@ public class MediaPlaybackService extends Service {
     public static final String QUEUE_CHANGED = "com.android.music.queuechanged";
     public static final String PLAYBACK_COMPLETE = "com.android.music.playbackcomplete";
     public static final String ASYNC_OPEN_COMPLETE = "com.android.music.asyncopencomplete";
-<<<<<<< HEAD
+
     public static final String REPEAT_CHANGED = "com.android.music.repeatmodechanged";
     public static final String SHUFFLE_CHANGED = "com.android.music.shufflemodechanged";
-=======
     public static final String REFRESH_PROGRESSBAR = "com.android.music.refreshui";
->>>>>>> cyanogen
 
     public static final String SERVICECMD = "com.android.music.musicservicecommand";
     public static final String CMDNAME = "command";
