@@ -97,7 +97,9 @@ public class MediaPlaybackActivity extends Activity implements MusicUtils.Defs,
     private Toast mToast;
     private int mTouchSlop;
     private boolean pluggedIn;
-    
+    private boolean mIntentDeRegistered = false;
+
+
     public MediaPlaybackActivity()
     {
     }
@@ -487,8 +489,13 @@ public class MediaPlaybackActivity extends Activity implements MusicUtils.Defs,
             } catch (RemoteException ex) {
             }
         }
-        mHandler.removeMessages(REFRESH);
-        unregisterReceiver(mStatusListener);
+
+        if (!mIntentDeRegistered) {
+            mHandler.removeMessages(REFRESH);
+            unregisterReceiver(mStatusListener);
+        }
+
+        unregisterReceiver(mScreenTimeoutListener);
         MusicUtils.unbindFromService(this);
         mService = null;
         super.onStop();
@@ -509,14 +516,21 @@ public class MediaPlaybackActivity extends Activity implements MusicUtils.Defs,
             // something went wrong
             mHandler.sendEmptyMessage(QUIT);
         }
-        
+
         IntentFilter f = new IntentFilter();
         f.addAction(MediaPlaybackService.PLAYSTATE_CHANGED);
         f.addAction(MediaPlaybackService.META_CHANGED);
         f.addAction(MediaPlaybackService.PLAYBACK_COMPLETE);
         f.addAction(Intent.ACTION_BATTERY_CHANGED);
         f.addAction(Intent.ACTION_HEADSET_PLUG);
+        f.addAction(MediaPlaybackService.REFRESH_PROGRESSBAR);
         registerReceiver(mStatusListener, new IntentFilter(f));
+
+        IntentFilter s = new IntentFilter();
+        s.addAction(Intent.ACTION_SCREEN_ON);
+        s.addAction(Intent.ACTION_SCREEN_OFF);
+        registerReceiver(mScreenTimeoutListener, new IntentFilter(s));
+
         updateTrackInfo();
         long next = refreshNow();
         queueNextRefresh(next);
@@ -532,6 +546,10 @@ public class MediaPlaybackActivity extends Activity implements MusicUtils.Defs,
     public void onResume() {
         super.onResume();
         updateTrackInfo();
+
+        if (mIntentDeRegistered) {
+            paused = false;
+        }
         setPauseButtonImage();
     }
     
@@ -1189,14 +1207,15 @@ public class MediaPlaybackActivity extends Activity implements MusicUtils.Defs,
     }
 
     private long refreshNow() {
+
         if(mService == null)
             return 500;
         try {
             long pos = mPosOverride < 0 ? mService.position() : mPosOverride;
             long remaining = 1000 - (pos % 1000);
             if ((pos >= 0) && (mDuration > 0)) {
-                mCurrentTime.setText(MusicUtils.makeTimeString(this, pos / 1000));
-                
+                mCurrentTime.setText(MusicUtils.makeTimeString(this, (pos + 500) / 1000));
+
                 if (mService.isPlaying()) {
                     mCurrentTime.setVisibility(View.VISIBLE);
                 } else {
@@ -1293,6 +1312,8 @@ public class MediaPlaybackActivity extends Activity implements MusicUtils.Defs,
             			}
                     }
             	}
+            } else if (action.equals(MediaPlaybackService.REFRESH_PROGRESSBAR)) {
+                refreshNow();
             }
         }
     };
@@ -1313,7 +1334,39 @@ public class MediaPlaybackActivity extends Activity implements MusicUtils.Defs,
     	}
     }
     
-    private static class AlbumSongIdWrapper {
+    private BroadcastReceiver mScreenTimeoutListener = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (Intent.ACTION_SCREEN_ON.equals(intent.getAction())) {
+                if (mIntentDeRegistered) {
+                    IntentFilter f = new IntentFilter();
+                    f.addAction(MediaPlaybackService.PLAYSTATE_CHANGED);
+                    f.addAction(MediaPlaybackService.META_CHANGED);
+                    f.addAction(MediaPlaybackService.PLAYBACK_COMPLETE);
+                    f.addAction(MediaPlaybackService.REFRESH_PROGRESSBAR);
+                    f.addAction(Intent.ACTION_SCREEN_ON);
+                    f.addAction(Intent.ACTION_SCREEN_OFF);
+                    registerReceiver(mStatusListener, new IntentFilter(f));
+                    mIntentDeRegistered = false;
+                }
+
+                updateTrackInfo();
+                long next = refreshNow();
+                queueNextRefresh(next);
+            }
+            else if (Intent.ACTION_SCREEN_OFF.equals(intent.getAction())) {
+                paused = true;
+
+                if (!mIntentDeRegistered) {
+                    mHandler.removeMessages(REFRESH);
+                    unregisterReceiver(mStatusListener);
+                    mIntentDeRegistered = true;
+                }
+            }
+        }
+    };
+
+	private static class AlbumSongIdWrapper {
         public long albumid;
         public long songid;
         AlbumSongIdWrapper(long aid, long sid) {
@@ -1364,7 +1417,7 @@ public class MediaPlaybackActivity extends Activity implements MusicUtils.Defs,
                 mAlbum.setVisibility(View.VISIBLE);
             }
             mDuration = mService.duration();
-            mTotalTime.setText(MusicUtils.makeTimeString(this, mDuration / 1000));
+            mTotalTime.setText(MusicUtils.makeTimeString(this, (mDuration + 500) / 1000));
         } catch (RemoteException ex) {
             finish();
         }
